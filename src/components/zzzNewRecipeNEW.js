@@ -1,30 +1,37 @@
 import React, { useState, useReducer, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { API } from '../config';
-import firebase from 'firebase';
 
 function NewRecipe() {
     const [ingredients, setIngredients] = useState([{ id: 0, value: null }]);
     const [title, setTitle] = useState('');
     const [directions, setDirections] = useState('');
     const [recipes, setRecipes] = useState([]);
-    const [newRecipe, setNewRecipe] = useState({});
-
     useEffect(() => {
         ingredients.map(i => { console.log(i.value) })
     }, [])
 
     const handleSubmitRecipe = event => {
         event.preventDefault();
-        //        setRecipes([...recipes, { title, ingredients, directions }]);
-        setNewRecipe({ title, ingredients, directions });
-        console.log('newrec', recipes)
-        const recipesRef = firebase.database().ref('recipes');
-        recipesRef.push(newRecipe);
-        setNewRecipe({});
+        setRecipes([...recipes, { title, ingredients, directions }]);
+        //recipes.map(r => console.log(r.title))
+        //doesn't save the last submitted recipe
+        //const recipe = { title, ingredients, directions };
+        //console.log(recipe.title)
+        axios.post(`${API}`, { title, ingredients, directions })
+            .then(res => {
+                setTimeout(() => {
+                    console.log(res)
+                }, 3000)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        //wes bos firebase plugin restaurant app
         setTitle('');
         setDirections('');
         setIngredients([]);
+
     };
 
     const handleChangeIngredient = (i, event) => {

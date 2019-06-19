@@ -2,32 +2,29 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { RecipeContext } from './RecipeContext';
 import { API } from '../config';
-import firebase from 'firebase';
 
 function RecipeList() {
     const [state, setState] = useContext(RecipeContext)
     const [recipes, setRecipes] = useState([]);
-
     useEffect(() => {
-        const recipesRef = firebase.database().ref('recipes');
-        recipesRef.on('value', (snapshot) => {
-            let items = snapshot.val();
-            let newState = [];
-            for (let item in items) {
-                newState.push({
-                    id: items[item].id,
-                    title: items[item].title,
-                    ingredients: items[item].ingredients,
-                    directions: items[item].directions
-                });
-            }
-            setRecipes(newState);
-            console.log('reb', recipes, 'st', state)
-            //setRecipes => {({ recipes: newState })}
-            //setState => ({ recipes }) => setRecipes({ ...recipes });
-        })
-    }, [state]);
-
+        //fetch(`${API}`, {
+        //  method: 'GET'
+        //})
+        axios.get(`${API}`)
+            //.then(response => response.json())
+            .then(json => {
+                const results = json.data;
+                const resultsArray = [];
+                for (const key in results) {
+                    resultsArray.push({ id: key, title: results[key].title, ingredients: results[key].ingredients, directions: results[key].directions })
+                }
+                setRecipes(resultsArray);
+                //setState({ rec: resultsArray });
+                //setState(state => ({ ...state, rec: resultsArray }))
+                //console.log('state', state.rec)
+            })
+        return () => { console.log('cleanup') }
+    }, [])
     return (
         <div className='container'>
             <h3>Recipe List</h3>

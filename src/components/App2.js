@@ -7,12 +7,13 @@ import base from '../base';
 
 class App extends React.Component {
     state = {
-        recipes: {}
+        recipes: []
     }
     componentDidMount() {
         this.ref = base.syncState('https://whatthespud-d726f.firebaseio.com/recipes', {
             context: this,
-            state: 'recipes'
+            state: 'recipes',
+            asArray: true
         })
     }
     componentWillUnmount() {
