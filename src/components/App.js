@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Rebase from 're-base';
 import Hero from './Hero';
 import NewRecipe from './NewRecipe';
 import RecipeList from './RecipeList';
 import { RecipeProvider } from './RecipeContext';
+import base from '../base';
 
+//class App extends React {
 function App() {
+  const [state, setState] = useState({});
+  const [recipes, setRecipes] = useState({});
+  const recipeContext = React.createContext({ recipes });
+
+  useEffect(() => {
+    //const databaseURL = "https://whatthespud-d726f.firebaseio.com";
+    //const url = ''
+    const ref = base.syncState('https://whatthespud-d726f.firebaseio.com/recipes', {
+      context: {
+        setState: ({ recipes }) => setRecipes({ ...recipes }),
+        state: { recipes }
+      },
+      state: 'recipes'
+    })
+    return () => { base.removeBinding(ref) }
+  }, [])
+
   //context maybe good for theme or language
   //if rebase doesnt work, make app fetch recipes and pass down with a prop onadd
   return (
