@@ -107,6 +107,7 @@ button {
   text-shadow: 0px 0px 18px #000000;
   text-transform: uppercase;
   font-family: Bourbon; /*font3*/
+  cursor: pointer;
 }
 button:before, button:after {
   content: '';
@@ -140,6 +141,13 @@ button:hover {
   color: #fff;
   border-color: rgb(61, 192, 0);
 }
+
+.btn-newline {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
 
 /* new recipe */
 
@@ -184,6 +192,21 @@ input, textarea {
     /*border: solid 1px white;
   padding: 5px;
   background-clip: content-box;  support: IE9+ */
+}
+
+
+#btn-remove-ingredient {
+  font-family: Montserrat, sans-serif;
+}
+
+#btn-another-ingredient {
+  font-size: 110%;
+  font-weight: bolder;
+}
+
+#add-ingredient-input {
+  width: 50vw;
+  margin-right: 10px;
 }
 
 ul {

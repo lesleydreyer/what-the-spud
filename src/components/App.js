@@ -1,5 +1,7 @@
 import React, { useEffect, useState, createContext } from 'react';
+import { BrowserRouter } from "react-router-dom";
 import Rebase from 're-base';
+import ScrollHandler from './ScrollHandler';
 import Hero from './Hero';
 import NewRecipe from './NewRecipe';
 import RecipeList from './RecipeList';
@@ -29,15 +31,18 @@ function App() {
 
   return (
     <RecipeProvider>
-      <Hero />
-      <div className="box">
-        <section className="recipe-list-section">
-          <RecipeList />
-        </section>
-        <hr />
-        <section className="add-recipe-section">
-          <NewRecipe />
-        </section></div>
+      <BrowserRouter>
+        <ScrollHandler />
+        <Hero />
+        <div className="box">
+          <section className="recipe-list-section">
+            <RecipeList />
+          </section>
+          <hr />
+          <section className="add-recipe-section">
+            <NewRecipe />
+          </section></div>
+      </BrowserRouter>
     </RecipeProvider>
   );
 }

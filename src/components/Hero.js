@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from "react-router-dom";
+
 
 function Hero() {
     return (
@@ -6,8 +8,12 @@ function Hero() {
             <section className="hero-text">
                 <h1>What the Spud </h1>
                 <p>Can't stand another plain old baked potato? Try something new!</p>
-                <button>View Recipes</button>
-                <button onClick={() => {/*scroll to add-recipe-section */ }}>Add A Recipe</button>
+                <Link to={`/#view-recipes-section`}>
+                    <button>View Recipes</button>
+                </Link>
+                <Link to={`/#new-recipe-section`}>
+                    <button>Add A Recipe</button>
+                </Link>
             </section>
         </header>
     )

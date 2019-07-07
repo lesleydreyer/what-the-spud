@@ -29,7 +29,7 @@ function RecipeList() {
     }, [state]);
 
     return (
-        <div className='container'>
+        <div className='container' id="view-recipes-section">
             <h3>Recipe List</h3>
             <ul>
                 {

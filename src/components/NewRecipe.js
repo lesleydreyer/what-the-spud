@@ -56,7 +56,7 @@ function NewRecipe() {
     }
 
     return (
-        <div className="container">
+        <div className="container" id={"new-recipe-section"}>
             <div className='form'>
                 <form onSubmit={handleSubmitRecipe}>
                     <legend >Add a Recipe</legend>
@@ -73,16 +73,17 @@ function NewRecipe() {
                         return (
                             <div key={`${ingredient}-${index}`}>
                                 <input
+                                    id="add-ingredient-input"
                                     type="text"
                                     placeholder="Enter ingredient"
                                     value={ingredient.value || ""}
                                     onChange={e => handleChangeIngredient(index, e)}
                                 />
-                                <button type="button" onClick={() => handleRemoveIngredient(index)}>x</button>
+                                <button id="btn-remove-ingredient" type="button" title="remove ingredient" onClick={() => handleRemoveIngredient(index)}>x</button>
                             </div>
                         );
                     })}
-                    <button type="button" onClick={() => handleAddIngredient()}>+</button>
+                    <button type="button" id="btn-another-ingredient" title="add another ingredient" onClick={() => handleAddIngredient()}>+</button>
                     <label>Directions</label>
                     <textarea
                         name="directions"
@@ -90,7 +91,7 @@ function NewRecipe() {
                         onChange={e => setDirections(e.target.value)}
                         rows='10'
                     />
-                    <button>Submit Recipe</button>
+                    <button class="btn-newline" title="submit recipe">Submit Recipe</button>
                 </form>
             </div>
         </div>
