@@ -1,41 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
-import { RecipeContext } from './RecipeContext';
-import { API } from '../config';
-import firebase from 'firebase';
+import React from 'react';
 
-function RecipeList() {
-    const [state, setState] = useContext(RecipeContext)
-    const [recipes, setRecipes] = useState([]);
-
-    useEffect(() => {
-        const recipesRef = firebase.database().ref('recipes');
-        recipesRef.on('value', (snapshot) => {
-            let items = snapshot.val();
-            let newState = [];
-            for (let item in items) {
-                newState.push({
-                    id: items[item].id,
-                    title: items[item].title,
-                    ingredients: items[item].ingredients,
-                    directions: items[item].directions
-                });
-            }
-            setRecipes(newState);
-            console.log('reb', recipes, 'st', state)
-            //setRecipes => {({ recipes: newState })}
-            //setState => ({ recipes }) => setRecipes({ ...recipes });
-        })
-    }, [state]);
+function RecipeList({ recipes }) {
 
     return (
-        <div className='container' id="view-recipes-section">
+        <div className='container'>
             <h3>Recipe List</h3>
             <ul>
-                {
-                    state.recipes.map(rec => <li>{rec.title}</li>)
-                }
-                {recipes.map(recipe => <li key={recipe.id}>{recipe.title}</li>)}
+
+                {recipes && recipes.map(recipe => <li key={recipe.id}>{recipe.title}</li>)}
             </ul>
         </div>
     )

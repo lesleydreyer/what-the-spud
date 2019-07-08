@@ -1,27 +1,18 @@
-import React, { useState, useReducer, useRef, useEffect } from 'react';
-import axios from 'axios';
-import { API } from '../config';
+import React, { useState, useEffect } from 'react';
 import firebase from 'firebase';
 
 function NewRecipe() {
     const [ingredients, setIngredients] = useState([{ id: 0, value: null }]);
     const [title, setTitle] = useState('');
     const [directions, setDirections] = useState('');
-    const [recipes, setRecipes] = useState([]);
-    const [newRecipe, setNewRecipe] = useState({});
-
-    useEffect(() => {
-        ingredients.map(i => { console.log(i.value) })
-    }, [])
 
     const handleSubmitRecipe = event => {
         event.preventDefault();
-        //        setRecipes([...recipes, { title, ingredients, directions }]);
-        setNewRecipe({ title, ingredients, directions });
-        console.log('newrec', recipes)
+        const item = {
+            title, ingredients, directions
+        }
         const recipesRef = firebase.database().ref('recipes');
-        recipesRef.push(newRecipe);
-        setNewRecipe({});
+        recipesRef.push(item);
         setTitle('');
         setDirections('');
         setIngredients([]);
@@ -69,7 +60,6 @@ function NewRecipe() {
                     />
                     <label>Ingredients</label>
                     {ingredients.map((ingredient, index) => {
-                        //console.log('index', index, 'ingred', ingredient)
                         return (
                             <div key={`${ingredient}-${index}`}>
                                 <input
@@ -91,7 +81,7 @@ function NewRecipe() {
                         onChange={e => setDirections(e.target.value)}
                         rows='10'
                     />
-                    <button class="btn-newline" title="submit recipe">Submit Recipe</button>
+                    <button className="btn-newline" title="submit recipe">Submit Recipe</button>
                 </form>
             </div>
         </div>

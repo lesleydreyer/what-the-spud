@@ -1,77 +1,54 @@
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, useState, useContext, createContext } from 'react';
 import { BrowserRouter } from "react-router-dom";
-import Rebase from 're-base';
 import ScrollHandler from './ScrollHandler';
 import Hero from './Hero';
 import NewRecipe from './NewRecipe';
 import RecipeList from './RecipeList';
-import { RecipeProvider } from './RecipeContext';
-import base from '../base';
+import Footer from './Footer';
+import base from '../base';//import Rebase from 're-base';
+import firebase from 'firebase';
 
-const RecipeContext = React.createContext(null);//({ recipes });
+
 
 function App() {
-  const [state, setState] = useState({});
-  const [recipes, setRecipes] = useState({});
+  const [state, setState] = useState()
+  const [recipes, setRecipes] = useState([]);
 
-  //context maybe good for theme or language
-  //if rebase doesnt work, make app fetch recipes and pass down with a prop onadd
   useEffect(() => {
-    const recipesRef = base.syncState('recipes', {
-      context: {
-        setState: ({ recipes }) => setRecipes({ ...recipes }),
-        state: { recipes }
-      },
-      state: 'recipes'
-    });
-    console.log('recie', recipes, 'st', state)
-    return () => { base.removeBinding(recipesRef) }
-  }, []);
+    const recipesRef = firebase.database().ref('recipes');
+    recipesRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newState = [];
+      for (let item in items) {
+        newState.push({
+          id: items[item].id,
+          title: items[item].title,
+          ingredients: items[item].ingredients,
+          directions: items[item].directions
+        });
+      }
+      setRecipes(newState);
+    })
+  }, [state]);
 
 
   return (
-    <RecipeProvider>
-      <BrowserRouter>
-        <ScrollHandler />
-        <Hero />
-        <div className="box">
-          <section className="recipe-list-section">
-            <RecipeList />
-          </section>
-          <hr />
-          <section className="add-recipe-section">
-            <NewRecipe />
-          </section></div>
-      </BrowserRouter>
-    </RecipeProvider>
+    <BrowserRouter>
+      <ScrollHandler />
+      <Hero />
+      <div className="box">
+        <section className="recipe-list-section">
+          <RecipeList recipes={recipes} />
+        </section>
+        <hr />
+        <section className="add-recipe-section">
+          <NewRecipe />
+        </section>
+        <hr />
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 
 export default App;
-//https://calendarific.com/holidays/2019/us
-//https://www.theaudiodb.com/
-//https://holidayapi.com/
-//https://us.openfoodfacts.org/cgi/search.pl?search_terms=apple&search_simple=1&action=process
-
-
-/*
-
-
-    <div className="hero-image">
-      <header>
-        <section className="hero-text">
-          <h1>What the Spud?</h1>
-          <p>Can't stand another plain old baked potato? Try something</p>
-          <button>View Recipes</button>
-          <button>Add a Recipe</button>
-        </section>
-      </header>
-      <section className="recipe-list">
-        <ul>
-          <li>Baked Potatoes</li>
-          <li>French Fries</li>
-          <li>Hassleback Potatoes</li>
-        </ul>
-      </section>
-    </div>
-*/
